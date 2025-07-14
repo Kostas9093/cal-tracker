@@ -92,7 +92,7 @@ export default function App() {
               : 'Neutral (↔ Maintenance)'}
           </div>
         </div>
-      )}
+      )} 
 
       {userData && !editingProfile && (
         <>
