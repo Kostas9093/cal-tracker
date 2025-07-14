@@ -81,7 +81,7 @@ export default function App() {
       {userData && !editingProfile && (
         <div className={`p-4 mb-4 border rounded ${colorClass}`}>
           <div className="font-semibold mb-1">{weekLabel}</div>
-          <div>Total Calories: {weeklyTotal.toFixed(0)} kcal</div>
+          <div>Total Calories: {weeklyTotal .toFixed(0)} kcal</div>
           <div>Maintenance: {maintenancePerWeek !== null ? `${maintenancePerWeek.toFixed(0)} kcal` : 'N/A'}</div>
           <div>
             Status:{' '}
