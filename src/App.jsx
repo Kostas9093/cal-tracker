@@ -41,7 +41,7 @@ export default function App() {
     const iso = date.toISOString().slice(0, 10);
     return sum + (data[iso]?.total || 0);
   }, 0);
-  
+
   const dailyMaintenance = userData ? calculateMaintenance(userData) : NaN;
   const maintenancePerWeek = isNaN(dailyMaintenance) ? null : dailyMaintenance * 7;
   const diff = maintenancePerWeek !== null ? weeklyTotal - maintenancePerWeek : null;
@@ -82,7 +82,7 @@ export default function App() {
         <div className={`p-4 mb-4 border rounded ${colorClass}`}>
           <div className="font-semibold mb-1">{weekLabel}</div>
           <div>Total Calories: {weeklyTotal.toFixed(0)} kcal</div>
-          <div>Maintenance: {maintenancePerWeek.toFixed(0)} kcal</div>
+          <div>Maintenance: {maintenancePerWeek !== null ? `${maintenancePerWeek.toFixed(0)} kcal` : 'N/A'}</div>
           <div>
             Status:{' '}
             {status === 'surplus'
