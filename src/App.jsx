@@ -41,8 +41,9 @@ export default function App() {
     const iso = date.toISOString().slice(0, 10);
     return sum + (data[iso]?.total || 0);
   }, 0);
-
-  const maintenancePerWeek = userData ? calculateMaintenance(userData) * 7 : null;
+  
+  const dailyMaintenance = userData ? calculateMaintenance(userData) : NaN;
+  const maintenancePerWeek = isNaN(dailyMaintenance) ? null : dailyMaintenance * 7;
   const diff = maintenancePerWeek !== null ? weeklyTotal - maintenancePerWeek : null;
 
   let status = '';

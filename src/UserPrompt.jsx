@@ -1,50 +1,74 @@
-// src/components/UserPrompt.jsx
 import React, { useState } from 'react';
 
-export default function UserPrompt({ onSave, initialValues = null }) {
-  const [weight, setWeight] = useState(initialValues?.weight || '');
-  const [activity, setActivity] = useState(initialValues?.activity || 'light');
+export default function UserPrompt({ initialValues = {}, onSave }) {
+  const [weight, setWeight] = useState(initialValues.weight || '');
+  const [height, setHeight] = useState(initialValues.height || '');
+  const [age, setAge] = useState(initialValues.age || '');
+  const [gender, setGender] = useState(initialValues.gender || 'male');
+  const [activity, setActivity] = useState(initialValues.activity || 'moderate');
 
   const handleSave = () => {
-    const parsedWeight = parseFloat(weight);
-    if (!isNaN(parsedWeight)) {
-      onSave({ weight: parsedWeight, activity });
+    if (!weight || !height || !age) {
+      alert('Please fill in all numeric fields.');
+      return;
     }
+
+    onSave({
+      weight: parseFloat(weight),
+      height: parseFloat(height),
+      age: parseInt(age),
+      gender,
+      activity
+    });
   };
 
   return (
-    <div className="p-4 border rounded mb-4">
-      <h2 className="text-lg font-semibold mb-2">
-        {initialValues ? 'Update Profile' : 'Enter Your Profile'}
-      </h2>
-      <div className="mb-2">
-        <label className="block text-sm">Current Weight (kg):</label>
+    <div className="border p-4 mb-4 rounded">
+      <h2 className="font-semibold mb-2">Your Info</h2>
+      <div className="grid gap-2 mb-2">
         <input
           type="number"
-          className="border px-2 py-1 rounded w-full"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
+          placeholder="Weight (kg)"
+          className="border px-2 py-1 rounded"
         />
-      </div>
-      <div className="mb-2">
-        <label className="block text-sm">Activity Level:</label>
+        <input
+          type="number"
+          value={height}
+          onChange={(e) => setHeight(e.target.value)}
+          placeholder="Height (cm)"
+          className="border px-2 py-1 rounded"
+        />
+        <input
+          type="number"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+          placeholder="Age"
+          className="border px-2 py-1 rounded"
+        />
         <select
-          className="border px-2 py-1 rounded w-full"
+          value={gender}
+          onChange={(e) => setGender(e.target.value)}
+          className="border px-2 py-1 rounded"
+        >
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+        <select
           value={activity}
           onChange={(e) => setActivity(e.target.value)}
+          className="border px-2 py-1 rounded"
         >
-          <option value="sedentary">Sedentary (little/no exercise)</option>
-          <option value="light">Light (1–3 days/week)</option>
-          <option value="moderate">Moderate (3–5 days/week)</option>
-          <option value="active">Active (6–7 days/week)</option>
-          <option value="very">Very active (twice/day or hard labor)</option>
+          <option value="sedentary">Sedentary</option>
+          <option value="light">Lightly Active</option>
+          <option value="moderate">Moderately Active</option>
+          <option value="active">Very Active</option>
+          <option value="veryActive">Extremely Active</option>
         </select>
       </div>
-      <button
-        onClick={handleSave}
-        className="mt-2 bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
-      >
-        {initialValues ? 'Update' : 'Save'}
+      <button onClick={handleSave} className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">
+        Save
       </button>
     </div>
   );
