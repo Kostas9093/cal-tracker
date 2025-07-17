@@ -1,9 +1,12 @@
 {
   "name": "cal-tracker",
   "private": true,
+  "proxy": "http://localhost:5000",
   "version": "0.0.0",
+   "main": "server.jsx",
   "type": "module",
   "scripts": {
+     "start": "node server.js",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",

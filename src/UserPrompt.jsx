@@ -1,9 +1,10 @@
+// UserPrompt.jsx
 import React, { useState } from 'react';
 
 export default function UserPrompt({ initialValues = {}, onSave }) {
-  const [weight, setWeight] = useState(initialValues.weight || '');
-  const [height, setHeight] = useState(initialValues.height || '');
-  const [age, setAge] = useState(initialValues.age || '');
+  const [weight, setWeight] = useState(initialValues.weight ?? '');
+  const [height, setHeight] = useState(initialValues.height ?? '');
+  const [age, setAge] = useState(initialValues.age ?? '');
   const [gender, setGender] = useState(initialValues.gender || 'male');
   const [activity, setActivity] = useState(initialValues.activity || 'moderate');
 
@@ -18,7 +19,7 @@ export default function UserPrompt({ initialValues = {}, onSave }) {
       height: parseFloat(height),
       age: parseInt(age),
       gender,
-      activity
+      activity,
     });
   };
 
@@ -67,7 +68,10 @@ export default function UserPrompt({ initialValues = {}, onSave }) {
           <option value="veryActive">Extremely Active</option>
         </select>
       </div>
-      <button onClick={handleSave} className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">
+      <button
+        onClick={handleSave}
+        className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+      >
         Save
       </button>
     </div>

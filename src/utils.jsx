@@ -1,5 +1,17 @@
-export function calculateMaintenance({ weight, height, age, gender, activity }) {
-  if (!weight || !height || !age || !gender || !activity) return NaN;
+export function calculateMaintenance(user) {
+  if (
+    !user ||
+    typeof user.weight !== 'number' ||
+    typeof user.height !== 'number' ||
+    typeof user.age !== 'number' ||
+    !user.gender ||
+    !user.activity
+  ) {
+    console.warn('calculateMaintenance received invalid user:', user, new Error().stack);
+    return NaN;
+  }
+
+  const { weight, height, age, gender, activity } = user;
 
   let bmr;
   if (gender === 'male') {
@@ -13,7 +25,7 @@ export function calculateMaintenance({ weight, height, age, gender, activity }) 
     light: 1.375,
     moderate: 1.55,
     active: 1.725,
-    veryActive: 1.9
+    veryActive: 1.9,
   };
 
   const multiplier = activityMultipliers[activity] || 1.2;
