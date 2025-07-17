@@ -59,7 +59,6 @@ export default function App() {
   });
 
   const [userData, setUserData] = useState(() => safeParseUserData());
-  console.log('🔍 Loaded userData from localStorage:', userData);
   const [editingProfile, setEditingProfile] = useState(!userData);
 
   useEffect(() => {
@@ -91,7 +90,7 @@ export default function App() {
     typeof userData.gender === 'string' &&
     typeof userData.activity === 'string';
 
-  if (userIsValid) {  console.log('✅ userIsValid:', userData);
+  if (userIsValid) {
     try {
       dailyMaintenance = calculateMaintenance(userData);
       maintenancePerWeek = dailyMaintenance * 7;
@@ -100,7 +99,6 @@ export default function App() {
       if (diff > 50) status = 'surplus';
       else if (diff < -50) status = 'deficit';
       else status = 'neutral';
-        console.warn('❗ userIsValid FAILED – userData is invalid', userData);
     } catch (err) {
       console.error('Error calculating maintenance:', err);
     }
