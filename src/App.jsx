@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom';
 import { getWeekNumber, calculateMaintenance } from './utils';
 import UserPrompt from './UserPrompt';
 
-// TEMP: Clear localStorage on first load for clean testing in production
-// 🔥 Remove this line once it works in Median!
-localStorage.clear();
 
 function getStartOfWeek(date) {
   const d = new Date(date);
