@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
 
 export default function DayDetail() {
   const { dayName } = useParams();
@@ -62,6 +54,7 @@ export default function DayDetail() {
       setData(updatedData);
       localStorage.setItem('calorieData', JSON.stringify(updatedData));
 
+      // Reset inputs
       setMealName('');
       setMealCalories('');
       setProtein('');
@@ -101,17 +94,6 @@ export default function DayDetail() {
     { protein: 0, carbs: 0, fat: 0 }
   );
 
-  const macroTotal = totalMacros.protein + totalMacros.carbs + totalMacros.fat;
-  const macroPercentages = macroTotal > 0
-    ? [
-        { name: 'Protein', value: Math.round((totalMacros.protein / macroTotal) * 100) },
-        { name: 'Carbs', value: Math.round((totalMacros.carbs / macroTotal) * 100) },
-        { name: 'Fat', value: Math.round((totalMacros.fat / macroTotal) * 100) },
-      ]
-    : [];
-
-  const COLORS = ['#3b82f6', '#10b981', '#f59e0b'];
-
   return (
     <div className="p-4 max-w-xl mx-auto">
       <button
@@ -123,36 +105,11 @@ export default function DayDetail() {
       <h2 className="text-xl font-bold mb-2">{readableDate}</h2>
 
       {meals.length > 0 && (
-        <>
-          <div className="mb-4 text-sm text-gray-700">
-            <strong>Daily Totals:</strong><br />
-            Calories: {data[dayName].total} kcal<br />
-            Protein: {totalMacros.protein} g, Carbs: {totalMacros.carbs} g, Fat: {totalMacros.fat} g
-          </div>
-
-          {/* ✅ Pie Chart Block */}
-          <div className="mb-4" style={{ width: '100%', height: 200 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={macroPercentages}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  label
-                >
-                  {macroPercentages.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value) => `${value}%`} />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </>
+        <div className="mb-4 text-sm text-gray-700">
+          <strong>Daily Totals:</strong><br />
+          Calories: {data[dayName].total} kcal<br />
+          Protein: {totalMacros.protein} g, Carbs: {totalMacros.carbs} g, Fat: {totalMacros.fat} g
+        </div>
       )}
 
       <ul className="mb-4">
@@ -181,7 +138,6 @@ export default function DayDetail() {
           <li className="text-gray-500">No meals logged.</li>
         )}
       </ul>
-
       <div className="flex flex-col gap-2">
         <input
           type="text"
@@ -203,9 +159,9 @@ export default function DayDetail() {
         >
           Add Meal
         </button>
-      </div>
-      <br />
-      <div>
+        </div>
+        <br />
+        <div>
         <input
           type="number"
           placeholder="Protein"
@@ -226,8 +182,7 @@ export default function DayDetail() {
           value={fat}
           onChange={(e) => setFat(e.target.value)}
           className="Nutr"
-        />
-      </div>
+        /></div>
     </div>
   );
 }
