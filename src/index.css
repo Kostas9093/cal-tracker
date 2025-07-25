@@ -26,6 +26,7 @@ h1, h2 {
 }
 
 button {
+  height: 5%;
   cursor: pointer;
   border: none;
   font-weight: 600;
