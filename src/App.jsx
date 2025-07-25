@@ -130,13 +130,17 @@ export default function App() {
           <div className="font-semibold mb-1">{weekLabel}</div>
           <div>Total Calories: {weeklyTotal.toFixed(0)} kcal</div>
           <div>
-            Maintenance:{' '}
+          Daily Maintenance: {' '} {dailyMaintenance !== null 
+          ? `${dailyMaintenance.toFixed(0)} Kcal` : `N/A`}
+          </div>
+          <div>
+           Weekly Maintenance:{' '}
             {maintenancePerWeek !== null
               ? `${maintenancePerWeek.toFixed(0)} kcal`
               : 'N/A'}
           </div>
           <div>
-            Status:{' '}
+            Weekly Status:{' '}
             {status === 'surplus'
               ? 'Surplus (↑ Likely weight gain)'
               : status === 'deficit'
