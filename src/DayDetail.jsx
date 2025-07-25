@@ -131,7 +131,7 @@ export default function DayDetail() {
           </div>
 
           {/* ✅ Pie Chart Block */}
-          <div className="mb-4" style={{ width: '100%', height: 200 }}>
+          <div className="mb-4" style={{ width: '100%', height: 250 }}>
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
