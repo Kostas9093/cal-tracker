@@ -155,7 +155,7 @@ export default function DayDetail() {
         />
         <button
           onClick={addMeal}
-          className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+          className="addMeal"
         >
           Add Meal
         </button>

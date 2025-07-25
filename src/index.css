@@ -183,14 +183,15 @@ input[type="number"]:focus {
   text-decoration: underline;
 }
 
-button.bg-blue-500 {
+.addMeal {
   color: white;
+  height:33px;
   padding: 0.375rem 1rem;
   border-radius: 6px;
   font-weight: 600;
 }
 
-button.bg-blue-500:hover {
+.addMeal {
   background-color: #2563eb;
 }
 
