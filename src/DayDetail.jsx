@@ -167,21 +167,21 @@ export default function DayDetail() {
           placeholder="Protein"
           value={protein}
           onChange={(e) => setProtein(e.target.value)}
-          className="cal"
+          className="Nutr"
         />
         <input
           type="number"
           placeholder="Carbs"
           value={carbs}
           onChange={(e) => setCarbs(e.target.value)}
-          className="cal"
+          className="Nutr"
         />
         <input
           type="number"
           placeholder="Fat"
           value={fat}
           onChange={(e) => setFat(e.target.value)}
-          className="cal"
+          className="Nutr"
         /></div>
     </div>
   );
