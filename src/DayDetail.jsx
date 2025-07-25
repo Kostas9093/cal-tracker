@@ -112,7 +112,7 @@ export default function DayDetail() {
           placeholder="Calories"
           value={mealCalories}
           onChange={(e) => setMealCalories(e.target.value)}
-          className="border px-2 py-1 rounded w-full"
+          className="cal"
         />
         <button
           onClick={addMeal}

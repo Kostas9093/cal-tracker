@@ -192,3 +192,7 @@ button.bg-blue-500 {
 button.bg-blue-500:hover {
   background-color: #2563eb;
 }
+
+.cal{
+  width: 13%;
+}
