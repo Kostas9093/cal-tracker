@@ -23,6 +23,9 @@ export default function DayDetail() {
   const [carbs, setCarbs] = useState('');
   const [fat, setFat] = useState('');
 
+  const [editIndex, setEditIndex] = useState(null);
+  const [editMeal, setEditMeal] = useState({});
+
   const meals = data[dayName]?.meals || [];
 
   const addMeal = () => {
@@ -84,6 +87,41 @@ export default function DayDetail() {
     localStorage.setItem('calorieData', JSON.stringify(updatedData));
   };
 
+  const handleEditClick = (index) => {
+    setEditIndex(index);
+    setEditMeal(meals[index]);
+  };
+
+  const handleEditChange = (key, value) => {
+    setEditMeal((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const saveEditedMeal = () => {
+    const updatedMeals = [...meals];
+    updatedMeals[editIndex] = {
+      ...editMeal,
+      calories: parseInt(editMeal.calories),
+      protein: parseFloat(editMeal.protein || 0),
+      carbs: parseFloat(editMeal.carbs || 0),
+      fat: parseFloat(editMeal.fat || 0),
+    };
+
+    const updatedDay = {
+      meals: updatedMeals,
+      total: updatedMeals.reduce((sum, m) => sum + m.calories, 0),
+    };
+
+    const updatedData = {
+      ...data,
+      [dayName]: updatedDay,
+    };
+
+    setData(updatedData);
+    localStorage.setItem('calorieData', JSON.stringify(updatedData));
+    setEditIndex(null);
+    setEditMeal({});
+  };
+
   const readableDate = new Date(dayName).toLocaleDateString(undefined, {
     weekday: 'long',
     month: 'long',
@@ -102,13 +140,14 @@ export default function DayDetail() {
   );
 
   const macroTotal = totalMacros.protein + totalMacros.carbs + totalMacros.fat;
-  const macroPercentages = macroTotal > 0
-    ? [
-        { name: 'Protein', value: Math.round((totalMacros.protein / macroTotal) * 100) },
-        { name: 'Carbs', value: Math.round((totalMacros.carbs / macroTotal) * 100) },
-        { name: 'Fat', value: Math.round((totalMacros.fat / macroTotal) * 100) },
-      ]
-    : [];
+  const macroPercentages =
+    macroTotal > 0
+      ? [
+          { name: 'Protein', value: Math.round((totalMacros.protein / macroTotal) * 100) },
+          { name: 'Carbs', value: Math.round((totalMacros.carbs / macroTotal) * 100) },
+          { name: 'Fat', value: Math.round((totalMacros.fat / macroTotal) * 100) },
+        ]
+      : [];
 
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b'];
 
@@ -130,7 +169,6 @@ export default function DayDetail() {
             Protein: {totalMacros.protein} g, Carbs: {totalMacros.carbs} g, Fat: {totalMacros.fat} g
           </div>
 
-          {/* ✅ Pie Chart Block */}
           <div className="mb-4" style={{ width: '100%', height: 250 }}>
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -157,23 +195,81 @@ export default function DayDetail() {
 
       <ul className="mb-4">
         {meals.map((meal, index) => (
-          <li key={index} className="border-b py-2">
+          <li key={index} className="flex flex-col gap-2">
             <div className="flex justify-between items-start">
-              <span>
-                <strong>{meal.name}</strong>: {meal.calories} kcal{' '}
-                <span className="text-gray-500 text-sm">({meal.time})</span><br />
-                {meal.protein !== undefined && (
-                  <span className="text-sm text-gray-600">
-                    Protein: {meal.protein}g, Carbs: {meal.carbs || 0}g, Fat: {meal.fat || 0}g
+              {editIndex === index ? (
+  <div className="text-gray-500">
+    <div className="flex flex-col gap-2">
+      <input
+        type="text"
+        placeholder="Meal name"
+        value={editMeal.name}
+        onChange={(e) => handleEditChange('name', e.target.value)}
+        className="border px-2 py-1 rounded w-full"
+      />
+   
+      <input
+        type="number"
+        placeholder="calories"
+        value={editMeal.calories}
+        onChange={(e) => handleEditChange('calories', e.target.value)}
+        className="cal"
+      />
+    </div>
+    <br />
+    <div className="mb-2">
+      <input
+        type="number"
+        placeholder="Protein"
+        value={editMeal.protein || ''}
+        onChange={(e) => handleEditChange('protein', e.target.value)}
+        className="Nutr"
+      />
+   
+      <input
+        type="number"
+        placeholder="Carbs"
+        value={editMeal.carbs || ''}
+        onChange={(e) => handleEditChange('carbs', e.target.value)}
+        className="Nutr"
+      />
+   
+      <input
+        type="number"
+        placeholder="Fat"
+        value={editMeal.fat || ''}
+        onChange={(e) => handleEditChange('fat', e.target.value)}
+        className="Nutr"
+      />
+ 
+      <button onClick={saveEditedMeal} className="but">
+        Save
+      </button>
+      <button onClick={() => setEditIndex(null)} className="but">
+        Cancel
+      </button>
+    </div>
+  </div>
+              ) : (
+                <div className="flex justify-between w-full">
+                  <span onClick={() => handleEditClick(index)} className="cursor-pointer">
+                    <strong>{meal.name}</strong>: {meal.calories} kcal{' '}
+                    <span className="text-gray-500 text-sm">({meal.time})</span>
+                    <br />
+                    {meal.protein !== undefined && (
+                      <span className="text-sm text-gray-600">
+                        Protein: {meal.protein}g, Carbs: {meal.carbs || 0}g, Fat: {meal.fat || 0}g
+                      </span>
+                    )}
                   </span>
-                )}
-              </span>
-              <button
-                onClick={() => deleteMeal(index)}
-                className="text-red-500 ml-4"
-              >
-                Delete
-              </button>
+                  <button
+                    onClick={() => deleteMeal(index)}
+                    className="but"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
           </li>
         ))}
@@ -205,7 +301,7 @@ export default function DayDetail() {
         </button>
       </div>
       <br />
-      <div>
+      <div className="flex gap-2">
         <input
           type="number"
           placeholder="Protein"
