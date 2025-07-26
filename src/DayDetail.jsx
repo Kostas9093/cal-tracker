@@ -141,7 +141,7 @@ export default function DayDetail() {
                   cx="50%"
                   cy="50%"
                   outerRadius={80}
-                  label
+                  label={({ value }) => `${value}%`}
                 >
                   {macroPercentages.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
