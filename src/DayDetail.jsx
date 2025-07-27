@@ -225,7 +225,7 @@ export default function DayDetail() {
         onChange={(e) => handleEditChange('protein', e.target.value)}
         className="Nutr"
       />
-   
+   {' '}
       <input
         type="number"
         placeholder="Carbs"
@@ -233,7 +233,7 @@ export default function DayDetail() {
         onChange={(e) => handleEditChange('carbs', e.target.value)}
         className="Nutr"
       />
-   
+      {' '}
       <input
         type="number"
         placeholder="Fat"
@@ -241,10 +241,11 @@ export default function DayDetail() {
         onChange={(e) => handleEditChange('fat', e.target.value)}
         className="Nutr"
       />
- 
+    {' '}
       <button onClick={saveEditedMeal} className="but">
         Save
       </button>
+         {' '}
       <button onClick={() => setEditIndex(null)} className="but">
         Cancel
       </button>
