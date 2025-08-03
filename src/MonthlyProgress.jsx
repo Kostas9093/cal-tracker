@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { calculateMaintenance, getWeekNumber } from './utils';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
 
 function getStartOfWeek(date) {
   const d = new Date(date);
@@ -43,30 +51,52 @@ export default function MonthlyProgress() {
 
   useEffect(() => {
     if (!userData) return;
-    const maintenance = calculateMaintenance(userData) * 7;
+
     const now = new Date();
     const weeks = getWeeksInMonth(now.getFullYear(), now.getMonth());
+
     const summary = weeks.map((start) => {
       const dates = getWeekDates(start);
+
       const total = dates.reduce((sum, d) => sum + (data[d]?.total || 0), 0);
-      const diff = total - maintenance;
+
+      const weeklyMaintenance = dates.reduce((sum, d) => {
+        const day = data[d];
+        if (day?.maintenance) {
+          return sum + day.maintenance;
+        } else {
+          console.warn(`Missing maintenance for ${d}`);
+          return sum;
+        }
+      }, 0);
+
+      const diff = total - weeklyMaintenance;
+
       return {
         week: `Week ${getWeekNumber(new Date(start))}`,
         total,
         diff,
+        maintenance: weeklyMaintenance,
         status:
           diff > 50 ? 'Surplus' : diff < -50 ? 'Deficit' : 'Maintenance',
       };
     });
+
     setMonthlyData(summary);
   }, [data, userData]);
 
   const totalMonth = monthlyData.reduce((sum, w) => sum + w.total, 0);
-  const totalMaintenance = (userData ? calculateMaintenance(userData) * 7 : 0) * monthlyData.length;
+  const totalMaintenance = monthlyData.reduce(
+    (sum, w) => sum + (w.maintenance || 0),
+    0
+  );
   const totalDiff = totalMonth - totalMaintenance;
   const overallStatus =
-    totalDiff > 50 ? 'Surplus (Weight Gain)' :
-    totalDiff < -50 ? 'Deficit (Weight Loss)' : 'Maintenance';
+    totalDiff > 50
+      ? 'Surplus (Weight Gain)'
+      : totalDiff < -50
+      ? 'Deficit (Weight Loss)'
+      : 'Maintenance';
 
   return (
     <div className="p-4 max-w-3xl mx-auto">
@@ -88,7 +118,7 @@ export default function MonthlyProgress() {
             <Line type="monotone" dataKey="total" stroke="#8884d8" name="Calories" />
             <Line
               type="monotone"
-              dataKey={() => calculateMaintenance(userData) * 7}
+              dataKey="maintenance"
               stroke="#82ca9d"
               name="Maintenance"
               dot={false}

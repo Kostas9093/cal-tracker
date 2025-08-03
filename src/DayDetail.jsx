@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { calculateMaintenance } from './utils.jsx';
+
 import {
   PieChart,
   Pie,
@@ -52,10 +54,14 @@ export default function DayDetail() {
 
       const updatedMeals = [...meals, newMeal];
 
-      const updatedDay = {
-        meals: updatedMeals,
-        total: updatedMeals.reduce((sum, m) => sum + m.calories, 0),
-      };
+     const userRaw = localStorage.getItem('userInfo');
+const user = userRaw ? JSON.parse(userRaw) : null;
+
+const updatedDay = {
+  meals: updatedMeals,
+  total: updatedMeals.reduce((sum, m) => sum + m.calories, 0),
+  maintenance: user ? calculateMaintenance(user) : null,
+};
 
       const updatedData = {
         ...data,
@@ -106,10 +112,15 @@ export default function DayDetail() {
       fat: parseFloat(editMeal.fat || 0),
     };
 
-    const updatedDay = {
-      meals: updatedMeals,
-      total: updatedMeals.reduce((sum, m) => sum + m.calories, 0),
-    };
+    const userRaw = localStorage.getItem('userInfo');
+const user = userRaw ? JSON.parse(userRaw) : null;
+
+const updatedDay = {
+  meals: updatedMeals,
+  total: updatedMeals.reduce((sum, m) => sum + m.calories, 0),
+  maintenance: user ? calculateMaintenance(user) : null,
+};
+
 
     const updatedData = {
       ...data,

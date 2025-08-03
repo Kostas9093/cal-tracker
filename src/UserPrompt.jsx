@@ -21,6 +21,14 @@ export default function UserPrompt({ initialValues = {}, onSave }) {
       gender,
       activity,
     });
+
+    localStorage.setItem('userInfo', JSON.stringify({
+  weight: parseFloat(weight),
+  height: parseFloat(height),
+  age: parseInt(age),
+  gender,
+  activity,
+}));
   };
 
   return (
